@@ -1,0 +1,15 @@
+.DS_Store
+.env
+.env.local
+.venv
+__pycache__/
+*.pyc
+.pytest_cache/
+node_modules/
+.next/
+dist/
+coverage/
+pnpm-lock.yaml
+!apps/diner-web/.env.local
+!apps/api/.env.local
+!apps/restaurant-console/.env.local

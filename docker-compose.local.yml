@@ -1,0 +1,29 @@
+services:
+  api:
+    env_file:
+      - ./apps/api/.env.local
+    environment:
+      DATABASE_URL: postgres://postgres:postgres@db:5432/reservations
+      JWT_SECRET: local-jwt-secret-with-at-least-32-chars
+      MANAGEMENT_API_TOKEN: local-management-token
+      DEFAULT_TIMEZONE: America/New_York
+
+  diner-web:
+    env_file:
+      - ./apps/diner-web/.env.local
+    environment:
+      NEXTAUTH_URL: http://localhost:3000
+      NEXTAUTH_SECRET: local-nextauth-secret
+      API_BASE_URL: http://api:8000/api
+      NEXT_PUBLIC_API_BASE_URL: http://localhost:8000/api
+      NEXT_PUBLIC_POSTHOG_KEY: ""
+      NEXT_PUBLIC_POSTHOG_HOST: https://us.i.posthog.com
+      WATCHPACK_POLLING: "true"
+
+  restaurant-console:
+    env_file:
+      - ./apps/restaurant-console/.env.local
+    environment:
+      API_BASE_URL: http://api:8000/api
+      MANAGEMENT_API_TOKEN: local-management-token
+      WATCHPACK_POLLING: "true"

@@ -1,0 +1,16 @@
+{
+  "name": "restaurant-interview-base",
+  "private": true,
+  "packageManager": "pnpm@10.4.1",
+  "scripts": {
+    "dev": "turbo run dev --parallel",
+    "dev:turbopack": "TURBOPACK=1 turbo run dev --parallel",
+    "local:setup-and-run": "./scripts/local-setup-and-run.sh",
+    "build": "turbo run build",
+    "lint": "turbo run lint",
+    "test": "turbo run test"
+  },
+  "devDependencies": {
+    "turbo": "^2.3.3"
+  }
+}
