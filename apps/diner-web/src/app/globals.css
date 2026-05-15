@@ -7,7 +7,14 @@
 }
 
 body {
-  @apply bg-slate-50 text-slate-900;
-  font-family: Arial, Helvetica, sans-serif;
+  @apply bg-cream text-brand antialiased;
+  background:
+    radial-gradient(circle at top left, rgba(155, 107, 67, 0.16), transparent 34rem),
+    linear-gradient(180deg, #fbf7f1 0%, #f6f0e8 48%, #efe4d6 100%);
+  font-family: Apercu, Inter, "Helvetica Neue", Arial, sans-serif;
   overflow-x: clip;
+}
+
+::selection {
+  background: rgba(155, 107, 67, 0.24);
 }

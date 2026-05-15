@@ -1,4 +1,4 @@
-# The Gilded Gobbler Reservation Booker
+# Cedar & Stone Steakhouse Reservation Booker
 
 ## Apps
 

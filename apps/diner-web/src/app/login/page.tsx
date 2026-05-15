@@ -54,15 +54,18 @@ export default function LoginPage() {
   }
 
   return (
-    <section className="mx-auto max-w-md rounded-xl bg-white p-6 shadow-sm">
-      <h1 className="text-2xl font-semibold">Login or Create Account</h1>
-      <form className="mt-4 space-y-3" onSubmit={onLogin}>
+    <section className="mx-auto max-w-md rounded-[2rem] border border-brand/10 bg-[#fffaf4] p-6 shadow-[0_24px_80px_rgba(21,18,13,0.12)] sm:p-8">
+      <p className="text-xs font-semibold uppercase tracking-[0.22em] text-accent">Guest access</p>
+      <h1 className="mt-3 font-display text-4xl font-semibold tracking-[-0.06em] text-brand">
+        Login or create account
+      </h1>
+      <form className="mt-6 space-y-3" onSubmit={onLogin}>
         <input
           required
           placeholder="username"
           value={username}
           onChange={(e: ChangeEvent<HTMLInputElement>) => setUsername(e.target.value)}
-          className="w-full rounded border px-3 py-2"
+          className="w-full rounded-2xl border border-brand/10 bg-white/70 px-4 py-3 text-brand outline-none transition placeholder:text-stone-400 focus:border-accent"
         />
         <input
           required
@@ -70,9 +73,9 @@ export default function LoginPage() {
           placeholder="password"
           value={password}
           onChange={(e: ChangeEvent<HTMLInputElement>) => setPassword(e.target.value)}
-          className="w-full rounded border px-3 py-2"
+          className="w-full rounded-2xl border border-brand/10 bg-white/70 px-4 py-3 text-brand outline-none transition placeholder:text-stone-400 focus:border-accent"
         />
-        <div className="flex gap-2">
+        <div className="flex flex-col gap-2 sm:flex-row">
           <Button type="submit">Login</Button>
           <Button type="button" variant="secondary" onClick={onRegister}>
             Create account
@@ -81,11 +84,15 @@ export default function LoginPage() {
         <Button type="button" variant="secondary" className="w-full" onClick={onDemoLogin}>
           Use demo account
         </Button>
-        <p className="text-xs text-slate-500">
+        <p className="text-xs text-stone-500">
           Demo credentials: <span className="font-mono">{DEMO_USERNAME}</span> /{" "}
           <span className="font-mono">{DEMO_PASSWORD}</span>
         </p>
-        {message && <p className="text-sm text-amber-800">{message}</p>}
+        {message && (
+          <p className="rounded-2xl border border-accent/25 bg-[#f4eadc] px-4 py-3 text-sm text-stone-800">
+            {message}
+          </p>
+        )}
       </form>
     </section>
   );
