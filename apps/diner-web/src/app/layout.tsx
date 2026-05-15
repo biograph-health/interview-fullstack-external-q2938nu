@@ -8,8 +8,8 @@ import { authOptions } from "@/lib/auth";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "The Gilded Gobbler",
-  description: "Interview baseline reservation flow"
+  title: "Cedar & Stone Steakhouse",
+  description: "Refined steakhouse reservation flow"
 };
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
@@ -20,16 +20,19 @@ export default async function RootLayout({ children }: { children: React.ReactNo
     <html lang="en">
       <body>
         <PosthogProvider>
-          <header className="border-b bg-white">
-            <nav className="mx-auto flex max-w-5xl items-center justify-between px-3 py-3 sm:px-4 sm:py-4">
-              <Link href="/" className="max-w-[190px] text-xl font-bold leading-tight tracking-tight sm:max-w-none">
-                The Gilded Gobbler
+          <header className="border-b border-brand/10 bg-cream/80 backdrop-blur">
+            <nav className="mx-auto flex max-w-6xl items-center justify-between px-3 py-3 sm:px-4 sm:py-5">
+              <Link
+                href="/"
+                className="max-w-[220px] font-display text-xl font-semibold leading-tight tracking-[-0.04em] sm:max-w-none sm:text-2xl"
+              >
+                Cedar & Stone Steakhouse
               </Link>
 
               <HeaderAuthControls username={username} isAuthenticated={isAuthenticated} />
             </nav>
           </header>
-          <main className="mx-auto min-w-0 max-w-5xl overflow-x-hidden px-2 py-3 sm:p-6">{children}</main>
+          <main className="mx-auto min-w-0 max-w-6xl overflow-x-hidden px-3 py-4 sm:p-6">{children}</main>
         </PosthogProvider>
       </body>
     </html>

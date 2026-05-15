@@ -3,6 +3,9 @@
 @tailwind utilities;
 
 body {
-  @apply bg-slate-100 text-slate-900;
-  font-family: Arial, Helvetica, sans-serif;
+  @apply bg-cream text-brand antialiased;
+  background:
+    radial-gradient(circle at top right, rgba(155, 107, 67, 0.16), transparent 30rem),
+    linear-gradient(180deg, #fbf7f1 0%, #f6f0e8 52%, #eee1d2 100%);
+  font-family: Apercu, Inter, "Helvetica Neue", Arial, sans-serif;
 }
