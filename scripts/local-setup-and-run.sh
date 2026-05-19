@@ -24,6 +24,74 @@ ensure_env_file() {
   cp "$example_file" "$target_file"
 }
 
+process_belongs_to_repo() {
+  local pid="$1"
+  local current_pid="$pid"
+  local command
+
+  while [ -n "$current_pid" ] && [ "$current_pid" != "0" ]; do
+    command="$(ps -p "$current_pid" -o command= 2>/dev/null || true)"
+    if [[ "$command" == *"$ROOT_DIR"* ]]; then
+      return 0
+    fi
+
+    current_pid="$(ps -p "$current_pid" -o ppid= 2>/dev/null | tr -d '[:space:]' || true)"
+  done
+
+  return 1
+}
+
+stop_repo_processes_on_port() {
+  local port="$1"
+  local label="$2"
+  local pids
+  local pid
+  local command
+  local repo_pids=""
+  local stopped=0
+
+  if ! command -v lsof >/dev/null 2>&1; then
+    return
+  fi
+
+  pids="$(lsof -tiTCP:"$port" -sTCP:LISTEN 2>/dev/null || true)"
+  if [ -z "$pids" ]; then
+    return
+  fi
+
+  for pid in $pids; do
+    if process_belongs_to_repo "$pid"; then
+      repo_pids="$repo_pids $pid"
+    else
+      command="$(ps -p "$pid" -o command= 2>/dev/null || true)"
+      echo "$label port $port is already in use by another process (PID $pid):"
+      echo "  $command"
+      echo "Stop that process, then rerun pnpm local:setup-and-run."
+      exit 1
+    fi
+  done
+
+  for pid in $repo_pids; do
+    if kill -0 "$pid" 2>/dev/null; then
+      echo "Stopping previous $label process on port $port (PID $pid)..."
+      kill "$pid" 2>/dev/null || true
+      stopped=1
+    fi
+  done
+
+  if [ "$stopped" = "1" ]; then
+    for _ in {1..20}; do
+      if [ -z "$(lsof -tiTCP:"$port" -sTCP:LISTEN 2>/dev/null || true)" ]; then
+        return
+      fi
+      sleep 0.5
+    done
+
+    echo "Timed out waiting for port $port to become available."
+    exit 1
+  fi
+}
+
 for cmd in docker python3; do
   if ! command -v "$cmd" >/dev/null 2>&1; then
     echo "Missing required command: $cmd"
@@ -115,5 +183,10 @@ echo "Running API migrations..."
 echo "Database fixtures ready."
 echo "Launching API (8000), diner-web (3000), and restaurant-console (3001)..."
 echo "Set TURBOPACK=1 before running this script to use Turbopack in both Next.js apps."
+
+docker compose stop api diner-web restaurant-console >/dev/null 2>&1 || true
+stop_repo_processes_on_port 8000 "API"
+stop_repo_processes_on_port 3000 "diner-web"
+stop_repo_processes_on_port 3001 "restaurant-console"
 
 $PNPM_CMD dev
